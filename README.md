@@ -1,2 +1,2 @@
-# Automatic-water-level-detector-using-esp8266
+# Arduino automatic water level detector
 An automatic flood water level detector to update to twitter update using ESP8266
