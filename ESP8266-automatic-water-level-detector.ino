@@ -12,7 +12,7 @@ int ECHO   = D2;  //ultrasonic sensor pin
 int dataUltrasonic;
 int FloatSensor = D5; //float sensor pin
 float floatSensorData;
-int relay = D6; //relay pin
+int relay = D6; //relay pin (optional)
 
 //wifi setup
 HTTPClient http;
@@ -123,13 +123,15 @@ void ultrasonicData(){
   delayMicroseconds(10); 
   digitalWrite(TRIGGER, LOW);
   long duration = pulseIn(ECHO, HIGH);
-  dataUltrasonic = 18.5 - ((duration/2) / 33.24);
+  dataUltrasonic = 18.5 - ((duration/2) / 33.24); //Calibration calculation for ultrasonic (if needed)
 
+  /*This is for relay use */
   if (dataUltrasonic < 8){
     digitalWrite(relay,HIGH);
   }else{
     digitalWrite(relay,LOW);
   }
+  /* delete if not needed*/
 }
 
 void loop() {
