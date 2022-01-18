@@ -1,10 +1,12 @@
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 
+//thingspeak API setup
 String host= "api.thingspeak.com";
 String url = "/apps/thingtweet/1/statuses/update";
 int httpPort = 80;
 
+//pin setup
 int TRIGGER = D3;
 int ECHO   = D2;  //ultrasonic sensor pin
 int dataUltrasonic;
@@ -12,20 +14,22 @@ int FloatSensor = D5; //float sensor pin
 float floatSensorData;
 int relay = D6; //relay pin
 
-//wifi things
+//wifi setup
 HTTPClient http;
-const char* ssid = "iPhone";
-const char* password = "ikinazman";
+const char* ssid = "/*Put your wifi ssid*/";
+const char* password = "/*Put your wifi password*/";
 
-//untuk timer post twitter
+//For timer post twitter
 unsigned long myTime;
-unsigned long postDelay = 60000; //delay post twitter
+unsigned long postDelay = 60000; //delay post twitter 1000 = 1s
 unsigned long lastPostTime;
 bool firstPost = true;
 
+//hashtag for put hashtag in post
 String hashTags[] = {"#fyp","#flood","#waterleveldetector","#TamanSeriRaia"};
 const size_t n = sizeof(hashTags) / sizeof(hashTags[0]);
 
+//wifi connect and autoconnect function
 void initWiFi() {
   WiFi.mode(WIFI_STA);
   WiFi.begin(ssid, password);
@@ -58,18 +62,19 @@ String randHashtag(){
   return tags;
 }
 
+//function for what to post on twitter
 void postTwitter(float heightValue){
  int httpCode = 400;
  String value = String(heightValue);
  String hashTag = randHashtag ();
  http.begin(host,httpPort,url);
- String RequestBody = "api_key=S1IH3NI36YVMYHVK";
+ String RequestBody = "api_key=S1IH3NI36YVMYHVK"; //change the API key to yours get from thingspeak API
         RequestBody += "&status=Caution! Water high is "+value+"!";
  
- if(firstPost){ //kalau first post
+ if(firstPost){
   firstPost = false;
   Serial.println("First post sending to twitter");
-  while(httpCode != 200){ //kalau fail ulang lagi
+  while(httpCode != 200){
    Serial.println("Fail to post. retrying");
    httpCode = http.POST(RequestBody);
    hashTag = randHashtag ();
