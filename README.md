@@ -8,5 +8,4 @@ This is an automatic flood water level detector to update to Twitter using *ESP8
 4. ESP8266
 5. Relay(optional)
 
-## Note:
 > This project use *thingspeak API* for sending tweet to twitter.
